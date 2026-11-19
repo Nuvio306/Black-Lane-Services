@@ -1,4 +1,4 @@
-# Photo credits: SOVEREIGN
+# Photo credits: Black Lane Services
 
 All images are free for commercial use with no permission required, under the **Unsplash License** (unsplash.com/license) or the **Pexels License** (pexels.com/license). No Unsplash+ images are included. Attribution isn't required, but it's good practice.
 

@@ -28,12 +28,12 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   // PLACEHOLDER domain
-  metadataBase: new URL("https://sovereignlimo.example"),
-  title: "Sovereign | Private Limousines in New York",
+  metadataBase: new URL("https://blacklaneservices.example"),
+  title: "Black Lane Services | VIP Service",
   description:
     "Chauffeured stretch, SUV and Sprinter limousines across New York City for weddings, proms, nights out and airport arrivals.",
   openGraph: {
-    title: "Sovereign",
+    title: "Black Lane Services",
     description: "Chauffeured limousines across New York City.",
     images: ["/images/hero.jpg"],
   },

@@ -455,9 +455,9 @@ Hero photography fills full-width with no rounding. Photo cards inside grids ret
 
 ---
 
-## Sovereign adaptations (project-specific overrides)
+## Black Lane Services adaptations (project-specific overrides)
 
-This project uses the Bugatti design language above for **SOVEREIGN**, a New York chauffeured car service. Logos, names and assets of Bugatti are NOT used, only the design language. Where this section conflicts with the above, this section wins.
+This project uses the Bugatti design language above for **Black Lane Services**, a New York chauffeured car service. Logos, names and assets of Bugatti are NOT used, only the design language. Where this section conflicts with the above, this section wins.
 
 - **Canvas** `#060606` instead of pure `#000000`, **ink** `#f3f2ef` instead of pure white (avoid pure black/white per taste rules).
 - **Muted-soft** raised to `#7c7c7c` so legal/fine print still clears WCAG AA 4.5:1 on the canvas.

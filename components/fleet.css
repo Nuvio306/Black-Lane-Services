@@ -41,7 +41,7 @@ html {
   color: #0b0a08;
 }
 
-/* ── Scope ───── */
+/* Scope */
 .fleet-vip {
   font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
   background: linear-gradient(180deg, #060606 0%, #080708 55%, #0a0c12 100%);
@@ -104,7 +104,7 @@ html {
   text-transform: uppercase;
 }
 
-/* ── Gilded italic ─────────────────────────────────────────────── */
+/* Gilded italic */
 .fl-gold-text {
   background: linear-gradient(100deg, #f0ddb2 0%, #d4af78 38%, #a97f45 62%, #e8cf9e 100%);
   background-size: 220% 100%;
@@ -114,7 +114,7 @@ html {
   animation: fl-sheen 8s ease-in-out infinite alternate;
 }
 
-/* ── Atmosphere ────────────────────────────────────────────────── */
+/* Atmosphere */
 .fl-aurora-a {
   background: radial-gradient(circle at 50% 50%, rgba(212, 175, 120, 0.11), transparent 65%);
   animation: fl-glow-a 28s ease-in-out infinite alternate;
@@ -129,7 +129,7 @@ html {
   animation: fl-grain 9s steps(10) infinite;
 }
 
-/* ── Occasions marquee: bolder & gilded ──────────────────────── */
+/* Occasions marquee */
 .fl-marquee {
   overflow: hidden;
   border-top: 1px solid rgba(212, 175, 120, 0.35);
@@ -145,8 +145,6 @@ html {
 .fl-marquee:hover .fl-marquee-track {
   animation-play-state: paused;
 }
-
-/* Make marquee items bolder, highly legible, and luminous */
 .fl-marquee span.fl-label {
   font-weight: 500;
   letter-spacing: 0.28em;
@@ -154,19 +152,19 @@ html {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* ── Photograph slow burn ──────────────────────────────────────── */
+/* Photograph slow burn */
 .fl-drift {
   transform-origin: 60% 40%;
   animation: fl-drift 22s ease-in-out infinite alternate;
 }
 
-/* ── Gallery plates: state driven by data-active ───────────────── */
+/* Gallery plates */
 .fl-scrim {
   background: linear-gradient(
     to top,
-    rgba(6, 6, 6, 0.95) 0%,
-    rgba(6, 6, 6, 0.45) 48%,
-    rgba(6, 6, 6, 0.12) 78%,
+    rgba(6, 6, 6, 0.96) 0%,
+    rgba(6, 6, 6, 0.65) 55%,
+    rgba(6, 6, 6, 0.16) 82%,
     rgba(6, 6, 6, 0.3) 100%
   );
   opacity: 0.6;
@@ -332,7 +330,7 @@ html {
   transition-delay: 0.2s;
 }
 
-/* ── Reservation links ───────────── */
+/* Reservation links */
 .fl-reserve {
   position: relative;
 }
@@ -353,7 +351,41 @@ html {
   transform: scaleX(1);
 }
 
-/* ── Keyframes ─────────────────────────────────────────────────── */
+/* Vehicle photo gallery */
+.fl-gallery {
+  max-width: 24rem;
+}
+.fl-gallery--compact {
+  max-width: 18rem;
+}
+.fl-gallery--compact .aspect-\[4\/3\] {
+  aspect-ratio: 16 / 9;
+}
+.fl-gallery-item {
+  -webkit-tap-highlight-color: transparent;
+}
+.fl-gallery-num {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: transparent;
+  -webkit-text-stroke: 1px #d4af78;
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.fl-gallery-item:hover .fl-gallery-num,
+.fl-gallery-item:focus-visible .fl-gallery-num {
+  opacity: 1;
+}
+.fl-gallery-item:focus-visible {
+  outline: 1px solid #d4af78;
+  outline-offset: 2px;
+}
+
+/* Keyframes */
 @keyframes fl-sheen {
   from { background-position: 0% 50%; }
   to { background-position: 100% 50%; }
@@ -387,7 +419,7 @@ html {
   to { transform: scale(1.12) translate3d(-1%, 1%, 0); }
 }
 
-/* ── Reduced motion ────────── */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -89,7 +89,7 @@ function TileCard({
     target: ref,
     offset: ["start end", "end start"],
   });
-  
+
   const y = useTransform(
     scrollYProgress,
     [0, 1],
@@ -101,11 +101,14 @@ function TileCard({
       ref={ref}
       id={`occasion-${tile.id}`}
       aria-labelledby={`occasion-${tile.id}-title`}
-      className="oc-tile on-photo group relative flex flex-col min-h-[30rem] lg:min-h-[34rem] overflow-hidden bg-[#0B0A08] cursor-default"
+      className="oc-tile on-photo group relative flex min-h-[26rem] cursor-default flex-col overflow-hidden bg-[#0B0A08] sm:min-h-[30rem] lg:min-h-[34rem]"
     >
       {/* Photograph container */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[10%] h-[120%]">
+        <motion.div
+          style={{ y }}
+          className="absolute inset-x-0 -inset-y-[10%] h-[120%]"
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={tile.image}
@@ -122,19 +125,22 @@ function TileCard({
       {/* Legibility scrim */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(to_top,rgba(6,6,6,0.95)_0%,rgba(6,6,6,0.52)_50%,rgba(6,6,6,0.15)_75%,rgba(6,6,6,0.3)_100%)] z-10"
+        className="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(6,6,6,0.96)_0%,rgba(6,6,6,0.68)_52%,rgba(6,6,6,0.22)_78%,rgba(6,6,6,0.35)_100%)] sm:bg-[linear-gradient(to_top,rgba(6,6,6,0.95)_0%,rgba(6,6,6,0.52)_50%,rgba(6,6,6,0.15)_75%,rgba(6,6,6,0.3)_100%)]"
       />
 
       {/* Engraved plate number */}
       <div
         aria-hidden="true"
-        className="oc-ghostnum oc-serif pointer-events-none absolute left-7 top-5 z-20 select-none leading-none"
+        className="oc-ghostnum oc-serif pointer-events-none absolute left-5 top-4 z-20 select-none leading-none sm:left-7 sm:top-5"
       >
         0{index + 1}
       </div>
 
       {/* Gold frame */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-3 z-30">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-2.5 z-30 sm:inset-3"
+      >
         <span className="oc-line oc-line-t" />
         <span className="oc-line oc-line-r" />
         <span className="oc-line oc-line-b" />
@@ -147,45 +153,47 @@ function TileCard({
       {/* Vertical catalogue label */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-5 top-6 z-30 flex flex-col items-center gap-3"
+        className="pointer-events-none absolute right-4 top-5 z-30 flex flex-col items-center gap-2.5 sm:right-5 sm:top-6 sm:gap-3"
       >
-        <span className="oc-numline h-8 w-px" />
-        <span className="oc-num text-[0.62rem] uppercase tracking-[0.3em] [writing-mode:vertical-rl]">
+        <span className="oc-numline h-6 w-px sm:h-8" />
+        <span className="oc-num text-[0.6rem] uppercase tracking-[0.28em] [writing-mode:vertical-rl] sm:text-[0.62rem] sm:tracking-[0.3em]">
           Nº 0{index + 1}
         </span>
       </div>
 
       {/* Content */}
-      <div className="pointer-events-none relative mt-auto z-30 p-8 sm:p-10 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1">
+      <div className="pointer-events-none relative z-30 mt-auto min-w-0 p-6 pr-12 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1 sm:p-10">
         <div
           className="h-px w-8 transition-all duration-700 group-hover:w-16"
-          style={{ background: `linear-gradient(90deg, #D4AF78, ${tile.tint})` }}
+          style={{
+            background: `linear-gradient(90deg, #D4AF78, ${tile.tint})`,
+          }}
         />
 
         <p
-          className="oc-label mt-4 flex items-center gap-2"
+          className="oc-label mt-3.5 flex items-center gap-2 sm:mt-4"
           style={{ color: tile.tint }}
         >
           <span
             aria-hidden="true"
-            className="inline-block h-[5px] w-[5px] rotate-45 border"
+            className="inline-block h-[5px] w-[5px] shrink-0 rotate-45 border"
             style={{ borderColor: tile.tint }}
           />
-          {tile.kicker}
+          <span>{tile.kicker}</span>
         </p>
 
         <h3
           id={`occasion-${tile.id}-title`}
-          className="t-display mt-2 text-[#F5F3EE] t-display-md"
+          className="t-display t-display-md mt-2 break-words text-[#F5F3EE]"
         >
           {tile.title}
         </h3>
 
-        <p className="text-body mt-3 text-[#F5F3EE]/75 transition-colors duration-700 group-hover:text-[#F5F3EE]/90 max-w-[28rem]">
+        <p className="text-body mt-2.5 max-w-[28rem] text-sm leading-relaxed text-[#F5F3EE]/80 transition-colors duration-700 group-hover:text-[#F5F3EE]/95 sm:mt-3 sm:text-base">
           {tile.body}
         </p>
 
-        <div className="mt-5 text-[0.7rem] uppercase tracking-[0.25em] text-[#D4AF78]/90 italic opacity-100 transition-all duration-700 lg:opacity-0 lg:group-hover:opacity-100">
+        <div className="mt-4 text-[0.68rem] italic uppercase tracking-[0.22em] text-[#D4AF78]/90 opacity-100 transition-all duration-700 sm:mt-5 sm:text-[0.7rem] sm:tracking-[0.25em] lg:opacity-0 lg:group-hover:opacity-100">
           {tile.caption}
         </div>
       </div>
@@ -205,17 +213,17 @@ export function Occasions() {
     >
       <div className="wrap relative z-10">
         {/* HEADER */}
-        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
-          <Reveal>
-            <div className="flex items-center gap-4">
-              <span className="h-px w-12 bg-gradient-to-r from-[#D4AF78] to-[#D4AF78]/20" />
-              <span className="text-[0.72rem] uppercase tracking-[0.34em] text-[#D4AF78]">
+        <div className="grid gap-7 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
+          <Reveal className="min-w-0">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="h-px w-8 bg-gradient-to-r from-[#D4AF78] to-[#D4AF78]/20 sm:w-12" />
+              <span className="text-[0.68rem] uppercase tracking-[0.28em] text-[#D4AF78] sm:text-[0.72rem] sm:tracking-[0.34em]">
                 Curated Engagements
               </span>
             </div>
             <h2
               id="occasions-title"
-              className="t-display t-display-lg mt-6 text-[#F5F3EE]"
+              className="t-display t-display-lg mt-4 text-[#F5F3EE] sm:mt-6"
             >
               From everyday plans,
               <br />
@@ -223,36 +231,45 @@ export function Occasions() {
             </h2>
           </Reveal>
 
-          <Reveal delay={0.1} className="lg:pb-2">
-            <p className="t-lead border-l border-[#D4AF78]/25 pl-6 text-[#F5F3EE]/70">
+          <Reveal delay={0.1} className="min-w-0 lg:pb-2">
+            <p className="t-lead border-l border-[#D4AF78]/25 pl-4 text-[#F5F3EE]/70 sm:pl-6">
               From dinner dates to special celebrations, enjoy a comfortable ride, professional service, and a stylish arrival every time.
             </p>
-            <p className="oc-label mt-6 flex flex-wrap items-center gap-3 pl-6 text-[#F5F3EE]/50">
-              Professional Chauffeurs <Diamond /> Comfort & Style <Diamond /> Great Value
+            <p className="oc-label mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 pl-4 text-[#F5F3EE]/50 sm:mt-6 sm:pl-6">
+              <span>Professional Chauffeurs</span>
+              <Diamond />
+              <span>Comfort &amp; Style</span>
+              <Diamond />
+              <span>Great Value</span>
             </p>
           </Reveal>
         </div>
 
         {/* 2x2 BALANCED GRID FOR 4 TILES */}
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-9 grid gap-5 sm:mt-12 sm:gap-6 md:grid-cols-2">
           {tiles.map((t, i) => (
-            <Reveal key={t.id} delay={0.1 + i * 0.08}>
+            <Reveal key={t.id} delay={0.1 + i * 0.08} className="min-w-0">
               <TileCard tile={t} index={i} />
             </Reveal>
           ))}
         </div>
 
         {/* CONCIERGE FOOTER */}
-        <Reveal className="mt-14 flex flex-col gap-5 border-t border-[#D4AF78]/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="flex items-center gap-3 text-[0.8rem] text-[#F5F3EE]/60">
-            Every engagement includes a uniformed personal chauffeur, an clean vehicle, and an uncompromising standard of care.
+        <Reveal className="mt-10 flex flex-col gap-4 border-t border-[#D4AF78]/10 pt-6 sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:gap-5 sm:pt-8">
+          <p className="text-xs leading-relaxed text-[#F5F3EE]/60 sm:text-[0.8rem]">
+            Every engagement includes a uniformed personal chauffeur, a clean vehicle, and an uncompromising standard of care.
           </p>
           <a
             href="#reserve"
-            className="oc-cta group inline-flex min-h-11 items-center gap-2 text-[0.7rem] uppercase tracking-[0.28em] text-[#D4AF78] transition-colors duration-300 hover:text-[#E4C491]"
+            className="oc-cta group inline-flex min-h-11 shrink-0 items-center gap-2 text-[0.7rem] uppercase tracking-[0.25em] text-[#D4AF78] transition-colors duration-300 hover:text-[#E4C491] sm:tracking-[0.28em]"
           >
-            Curate your evening
-            <span aria-hidden="true">→</span>
+            <span>Curate your evening</span>
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+              →
+            </span>
           </a>
         </Reveal>
       </div>
@@ -269,7 +286,7 @@ function Diamond({ className = "" }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-block h-[5px] w-[5px] rotate-45 border border-[#D4AF78]/60 ${className}`}
+      className={`inline-block h-[5px] w-[5px] shrink-0 rotate-45 border border-[#D4AF78]/60 ${className}`}
     />
   );
 }

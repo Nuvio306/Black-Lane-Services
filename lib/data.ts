@@ -14,7 +14,7 @@ export type Vehicle = {
 export const fleet: Vehicle[] = [
   {
     id: "suburban",
-    name: "Chevrolet Suburban",
+    name: "2026 Chevrolet Suburban",
     passengers: 6,
     image: "/images/fleet-suburban.jpg",
     alt: "Black Chevrolet Suburban",

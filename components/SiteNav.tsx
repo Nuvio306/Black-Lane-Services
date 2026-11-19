@@ -1,7 +1,7 @@
 // components/SiteNav.tsx
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -54,7 +54,7 @@ export function SiteNav() {
   // Lock body scroll, trap focus, and manage Escape when the menu is open.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     firstLink.current?.focus();
 
@@ -90,7 +90,7 @@ export function SiteNav() {
 
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
       menuBtn.current?.focus();
     };
@@ -120,26 +120,38 @@ export function SiteNav() {
         }`}
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
-        <div className="wrap grid h-[var(--nav-h)] grid-cols-[1fr_auto_1fr] items-center">
+        <div className="wrap grid h-[var(--nav-h)] grid-cols-[auto_1fr_auto] items-center gap-2 sm:grid-cols-[1fr_auto_1fr] sm:gap-4">
           {/* Left: Menu Trigger */}
-          <div>
+          <div className="flex items-center justify-start">
             <button
               ref={menuBtn}
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="site-menu"
-              className="group inline-flex min-h-11 items-center gap-3 px-2 text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78]"
+              className="group inline-flex min-h-11 min-w-11 touch-manipulation items-center justify-center gap-3 px-2 text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78] sm:justify-start"
             >
               {open ? (
-                <X size={20} weight="light" aria-hidden="true" className="transition-transform duration-500 group-hover:rotate-90" />
+                <X
+                  size={20}
+                  weight="light"
+                  aria-hidden="true"
+                  className="transition-transform duration-500 group-hover:rotate-90"
+                />
               ) : (
-                <List size={20} weight="light" aria-hidden="true" className="transition-transform duration-500 group-hover:rotate-90" />
+                <List
+                  size={20}
+                  weight="light"
+                  aria-hidden="true"
+                  className="transition-transform duration-500 group-hover:rotate-90"
+                />
               )}
               <span className="hidden text-[0.8125rem] uppercase tracking-[0.2em] sm:inline">
                 {open ? "Close" : "Menu"}
               </span>
-              <span className="sr-only sm:hidden">{open ? "Close menu" : "Open menu"}</span>
+              <span className="sr-only sm:hidden">
+                {open ? "Close menu" : "Open menu"}
+              </span>
             </button>
           </div>
 
@@ -147,18 +159,29 @@ export function SiteNav() {
           <a
             href="#top"
             aria-label="Black Lane Services, back to top"
-            className="inline-flex min-h-11 items-center justify-center px-2 text-[#F5F3EE] transition-opacity duration-500 hover:opacity-80"
+            className="inline-flex min-h-11 touch-manipulation items-center justify-center px-1 text-center text-[#F5F3EE] transition-opacity duration-500 hover:opacity-80 sm:px-2"
           >
             <Wordmark />
           </a>
 
           {/* Right: Actions */}
-          <div className="flex items-center justify-end gap-4 sm:gap-6">
+          <div className="flex items-center justify-end gap-2 sm:gap-6">
+            {time && (
+              <span
+                aria-hidden="true"
+                className="hidden text-[0.6875rem] uppercase tracking-[0.2em] text-[#D4AF78]/75 tabular-nums xl:inline-block"
+              >
+                NYC {time}
+              </span>
+            )}
             <a
               href={site.phoneHref}
               className="hidden items-center gap-2.5 text-[0.8125rem] uppercase tracking-[0.15em] text-[#F5F3EE]/60 transition-colors duration-500 hover:text-[#D4AF78] lg:inline-flex tabular"
             >
-              <span aria-hidden="true" className="sn-pulse h-1.5 w-1.5 rounded-full bg-[#8FBF8A]" />
+              <span
+                aria-hidden="true"
+                className="sn-pulse h-1.5 w-1.5 rounded-full bg-[#8FBF8A]"
+              />
               {site.phoneDisplay}
             </a>
             <a
@@ -180,44 +203,78 @@ export function SiteNav() {
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="sitemenu-vip fixed inset-0 z-40 overflow-y-auto overscroll-contain"
+            className="sitemenu-vip fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-[#060606]/95 backdrop-blur-md"
+            style={{
+              paddingTop: "env(safe-area-inset-top)",
+              paddingBottom: "env(safe-area-inset-bottom)",
+            }}
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={reduce ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0 }}
+            exit={
+              reduce
+                ? { opacity: 0, transition: { duration: 0 } }
+                : { opacity: 0 }
+            }
             transition={{ duration: 0.6, ease }}
           >
-
-
             {/* Architectural framing — drawn as the door opens */}
             <div
               aria-hidden="true"
               className="pointer-events-none fixed z-[1] hidden sm:block"
               style={{ inset: "clamp(1rem, 3vw, 2rem)" }}
             >
-              <motion.span className="absolute left-0 top-0 h-px w-full origin-left bg-gradient-to-r from-transparent via-[#D4AF78]/45 to-[#D4AF78]/15" {...draw(0.15, "scaleX")} />
-              <motion.span className="absolute right-0 top-0 h-full w-px origin-top bg-gradient-to-b from-[#D4AF78]/40 to-transparent" {...draw(0.3, "scaleY")} />
-              <motion.span className="absolute bottom-0 left-0 h-px w-full origin-right bg-gradient-to-l from-transparent via-[#D4AF78]/40 to-[#D4AF78]/15" {...draw(0.45, "scaleX")} />
-              <motion.span className="absolute bottom-0 left-0 h-full w-px origin-bottom bg-gradient-to-t from-[#D4AF78]/35 to-transparent" {...draw(0.6, "scaleY")} />
-              <motion.span className="absolute -left-px -top-px h-8 w-8 border-l border-t border-[#D4AF78]/70" {...appear(0.7)} />
-              <motion.span className="absolute -bottom-px -right-px h-8 w-8 border-b border-r border-[#D4AF78]/70" {...appear(0.7)} />
-              <motion.span className="absolute -right-[3px] -top-[3px] h-[7px] w-[7px] rotate-45 border border-[#D4AF78] bg-[#060606]" {...appear(0.85)} />
+              <motion.span
+                className="absolute left-0 top-0 h-px w-full origin-left bg-gradient-to-r from-transparent via-[#D4AF78]/45 to-[#D4AF78]/15"
+                {...draw(0.15, "scaleX")}
+              />
+              <motion.span
+                className="absolute right-0 top-0 h-full w-px origin-top bg-gradient-to-b from-[#D4AF78]/40 to-transparent"
+                {...draw(0.3, "scaleY")}
+              />
+              <motion.span
+                className="absolute bottom-0 left-0 h-px w-full origin-right bg-gradient-to-l from-transparent via-[#D4AF78]/40 to-[#D4AF78]/15"
+                {...draw(0.45, "scaleX")}
+              />
+              <motion.span
+                className="absolute bottom-0 left-0 h-full w-px origin-bottom bg-gradient-to-t from-[#D4AF78]/35 to-transparent"
+                {...draw(0.6, "scaleY")}
+              />
+              <motion.span
+                className="absolute -left-px -top-px h-8 w-8 border-l border-t border-[#D4AF78]/70"
+                {...appear(0.7)}
+              />
+              <motion.span
+                className="absolute -bottom-px -right-px h-8 w-8 border-b border-r border-[#D4AF78]/70"
+                {...appear(0.7)}
+              />
+              <motion.span
+                className="absolute -right-[3px] -top-[3px] h-[7px] w-[7px] rotate-45 border border-[#D4AF78] bg-[#060606]"
+                {...appear(0.85)}
+              />
             </div>
 
-            <nav aria-label="Primary" className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center gap-16 pb-12 pt-28">
+            <nav
+              aria-label="Primary"
+              className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-between gap-10 pb-10 pt-20 sm:justify-center sm:gap-16 sm:pb-12 sm:pt-28"
+            >
               {/* Main Navigation Links */}
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-1.5 sm:gap-3">
                 {menuItems.map((item, i) => (
                   <motion.li
                     key={item.href}
                     initial={reduce ? false : { opacity: 0, x: -24 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1 + i * 0.06, ease }}
+                    transition={{
+                      duration: 0.8,
+                      delay: 0.1 + i * 0.06,
+                      ease,
+                    }}
                   >
                     <a
                       ref={i === 0 ? firstLink : undefined}
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className="sn-menu-link group relative inline-flex items-baseline py-2 text-[clamp(2.25rem,5.5vw,3.75rem)] font-light leading-[1.1] tracking-[-0.02em] text-[#F5F3EE]/80 transition-colors duration-500 hover:text-[#D4AF78]"
+                      className="sn-menu-link group relative inline-flex min-h-11 touch-manipulation items-baseline py-1.5 text-[clamp(2rem,8vw,3.75rem)] font-light leading-[1.1] tracking-[-0.02em] text-[#F5F3EE]/85 transition-colors duration-500 hover:text-[#D4AF78] sm:py-2 sm:text-[clamp(2.25rem,5.5vw,3.75rem)]"
                     >
                       <span className="sn-serif relative inline-block transition-transform duration-500 group-hover:translate-x-2">
                         {item.label}
@@ -227,48 +284,58 @@ export function SiteNav() {
                 ))}
               </ul>
 
-              {/* Contact / Concierge Details */}
-              <motion.div
-                className="grid gap-8 border-t border-[#D4AF78]/20 pt-10 sm:grid-cols-3"
-                initial={reduce ? false : { opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease }}
-              >
-                <div>
-                  <p className="sn-label mb-3 text-[#D4AF78]/70">Telephone</p>
-                  <a
-                    href={site.phoneHref}
-                    className="sn-serif block text-[1.35rem] font-light text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78] tabular"
-                  >
-                    {site.phoneDisplay}
-                  </a>
-                </div>
-                <div>
-                  <p className="sn-label mb-3 text-[#D4AF78]/70">Email</p>
-                  <a
-                    href={`mailto:${site.email}`}
-                    className="block break-words text-[1.125rem] font-light text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78]"
-                  >
-                    {site.email}
-                  </a>
-                </div>
-                <div>
-                  <p className="sn-label mb-3 text-[#D4AF78]/70">Concierge Hours</p>
-                  <p className="text-[1.125rem] font-light text-[#F5F3EE]/80">{site.hours}</p>
-                </div>
-              </motion.div>
+              <div className="space-y-6 sm:space-y-8">
+                {/* Contact / Concierge Details */}
+                <motion.div
+                  className="grid gap-6 border-t border-[#D4AF78]/20 pt-6 sm:grid-cols-3 sm:gap-8 sm:pt-10"
+                  initial={reduce ? false : { opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5, ease }}
+                >
+                  <div>
+                    <p className="sn-label mb-2 text-[#D4AF78]/75 sm:mb-3">
+                      Telephone
+                    </p>
+                    <a
+                      href={site.phoneHref}
+                      className="sn-serif inline-flex min-h-10 touch-manipulation items-center text-[1.2rem] font-light text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78] tabular sm:text-[1.35rem]"
+                    >
+                      {site.phoneDisplay}
+                    </a>
+                  </div>
+                  <div>
+                    <p className="sn-label mb-2 text-[#D4AF78]/75 sm:mb-3">
+                      Email
+                    </p>
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="inline-flex min-h-10 touch-manipulation items-center break-all text-[1rem] font-light text-[#F5F3EE] transition-colors duration-500 hover:text-[#D4AF78] sm:break-words sm:text-[1.125rem]"
+                    >
+                      {site.email}
+                    </a>
+                  </div>
+                  <div>
+                    <p className="sn-label mb-2 text-[#D4AF78]/75 sm:mb-3">
+                      Concierge Hours
+                    </p>
+                    <p className="text-[1rem] font-light text-[#F5F3EE]/80 sm:text-[1.125rem]">
+                      {site.hours}
+                    </p>
+                  </div>
+                </motion.div>
 
-              {/* Status + closing note */}
-              <motion.div
-                className="flex flex-col gap-4 border-t border-[#D4AF78]/10 pt-6 sm:flex-row sm:items-center sm:justify-between"
-                initial={reduce ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.62, ease }}
-              >
-                <p className="sn-label flex items-center gap-3 text-[#F5F3EE]/40">
-                  By Appointment Only
-                </p>
-              </motion.div>
+                {/* Status + closing note */}
+                <motion.div
+                  className="flex flex-col gap-3 border-t border-[#D4AF78]/10 pt-5 sm:flex-row sm:items-center sm:justify-between sm:pt-6"
+                  initial={reduce ? false : { opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.62, ease }}
+                >
+                  <p className="sn-label flex items-center gap-3 text-[#F5F3EE]/55">
+                    By Appointment Only
+                  </p>
+                </motion.div>
+              </div>
             </nav>
 
             {/* Film grain */}

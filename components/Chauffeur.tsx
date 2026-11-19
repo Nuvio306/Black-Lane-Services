@@ -87,7 +87,10 @@ export function Chauffeur() {
       className="chauffeur-vip on-photo relative isolate flex min-h-[min(100dvh,56rem)] scroll-mt-20 items-end overflow-hidden border-t border-[#D4AF78]/20"
     >
       {/* ── PHOTOGRAPH: parallax band, slow burn, night grade ───── */}
-      <motion.div style={{ y: yImage }} className="absolute inset-x-0 -inset-y-[6%] z-0">
+      <motion.div
+        style={{ y: yImage }}
+        className="absolute inset-x-0 -inset-y-[6%] z-0"
+      >
         <div className="ch-drift absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -97,7 +100,7 @@ export function Chauffeur() {
             height={1350}
             loading="lazy"
             draggable={false}
-            className="grade absolute inset-0 h-full w-full object-cover"
+            className="grade absolute inset-0 h-full w-full object-cover object-[65%_25%] sm:object-center"
             style={{ filter: "brightness(0.62) contrast(1.1) saturate(0.85)" }}
           />
         </div>
@@ -109,22 +112,28 @@ export function Chauffeur() {
         className="absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(to top, #060606 4%, rgba(6,6,6,0.82) 34%, rgba(6,6,6,0.25) 62%, rgba(6,6,6,0.45) 100%)",
+            "linear-gradient(to top, #060606 4%, rgba(6,6,6,0.86) 38%, rgba(6,6,6,0.32) 66%, rgba(6,6,6,0.48) 100%)",
         }}
       />
 
       {/* Colour grade: steel night above, candle gold below */}
-      <div aria-hidden="true" className="ch-glow-a absolute inset-0 z-[2] mix-blend-screen" />
-      <div aria-hidden="true" className="ch-glow-b absolute inset-0 z-[2] mix-blend-screen" />
+      <div
+        aria-hidden="true"
+        className="ch-glow-a pointer-events-none absolute inset-0 z-[2] overflow-hidden mix-blend-screen"
+      />
+      <div
+        aria-hidden="true"
+        className="ch-glow-b pointer-events-none absolute inset-0 z-[2] overflow-hidden mix-blend-screen"
+      />
 
       {/* ── THE MATTE: a gallery frame, drawn on arrival ────────── */}
       <div
         className="pointer-events-none absolute z-[5]"
         style={{
-          top: "clamp(4.5rem,10vh,6rem)",
-          left: "clamp(1rem,3vw,2.5rem)",
-          right: "clamp(1rem,3vw,2.5rem)",
-          bottom: "clamp(1rem,3vw,2.5rem)",
+          top: "clamp(2.25rem, 6vh, 6rem)",
+          left: "clamp(0.875rem, 3vw, 2.5rem)",
+          right: "clamp(0.875rem, 3vw, 2.5rem)",
+          bottom: "clamp(0.875rem, 3vw, 2.5rem)",
         }}
       >
         <motion.span
@@ -149,12 +158,12 @@ export function Chauffeur() {
         />
         <motion.span
           aria-hidden="true"
-          className="absolute -left-px -top-px h-8 w-8 border-l border-t border-[#D4AF78]"
+          className="absolute -left-px -top-px h-6 w-6 border-l border-t border-[#D4AF78] sm:h-8 sm:w-8"
           {...appear(0.9)}
         />
         <motion.span
           aria-hidden="true"
-          className="absolute -bottom-px -right-px h-8 w-8 border-b border-r border-[#D4AF78]"
+          className="absolute -bottom-px -right-px h-6 w-6 border-b border-r border-[#D4AF78] sm:h-8 sm:w-8"
           {...appear(0.9)}
         />
         <motion.span
@@ -165,13 +174,13 @@ export function Chauffeur() {
       </div>
 
       {/* ── CONTENT: laid over the dark lower part ──────────────── */}
-      <div className="wrap relative z-10 w-full pb-[clamp(4rem,8vh,6rem)] pt-40">
-        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+      <div className="wrap relative z-10 w-full pb-[clamp(2.5rem,7vh,6rem)] pt-24 sm:pt-32 lg:pt-40">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
           <Reveal>
             {/* Gold eyebrow */}
-            <div className="mb-6 flex items-center gap-4">
-              <span className="h-px w-12 bg-gradient-to-r from-[#D4AF78] to-[#D4AF78]/20" />
-              <span className="text-[0.72rem] uppercase tracking-[0.34em] text-[#D4AF78]">
+            <div className="mb-4 flex items-center gap-3 sm:mb-6 sm:gap-4">
+              <span className="h-px w-8 bg-gradient-to-r from-[#D4AF78] to-[#D4AF78]/20 sm:w-12" />
+              <span className="text-[0.65rem] uppercase tracking-[0.26em] text-[#D4AF78] sm:text-[0.72rem] sm:tracking-[0.34em]">
                 Your Ride, Our Priority
               </span>
             </div>
@@ -182,29 +191,30 @@ export function Chauffeur() {
             >
               Sit back.
               <br />
-              <em className="ch-gold-text italic">We'll take it from here.</em>
+              <em className="ch-gold-text italic">We&apos;ll take it from here.</em>
             </h2>
           </Reveal>
 
           <Reveal delay={0.12} className="lg:pb-1">
             {/* The house maxim */}
-            <figure className="relative max-w-[28rem] border-l border-[#D4AF78]/25 pl-7">
+            <figure className="relative max-w-[28rem] border-l border-[#D4AF78]/25 pl-4 sm:pl-7">
               <span
                 aria-hidden="true"
-                className="ch-serif absolute -left-3 -top-7 select-none text-[4.5rem] leading-none text-[#D4AF78]/30"
+                className="ch-serif pointer-events-none absolute -left-2 -top-5 select-none text-[3.25rem] leading-none text-[#D4AF78]/30 sm:-left-3 sm:-top-7 sm:text-[4.5rem]"
               >
-                “
+                &ldquo;
               </span>
-              <blockquote className="ch-serif text-[1.45rem] font-light italic leading-[1.5] text-[#F5F3EE]/85">
-                True luxury is never rushed; it is felt in the quiet perfection of arrival.
+              <blockquote className="ch-serif text-[1.15rem] font-light italic leading-[1.5] text-[#F5F3EE]/85 sm:text-[1.45rem]">
+                True luxury is never rushed; it is felt in the quiet perfection
+                of arrival.
               </blockquote>
-              <figcaption className="ch-label mt-4 text-[#D4AF78]/70">
-                — The Executive Mandate
+              <figcaption className="ch-label mt-3 text-[#D4AF78]/75 sm:mt-4 sm:text-[#D4AF78]/70">
+                &mdash; The Executive Mandate
               </figcaption>
             </figure>
 
             {/* The invitation */}
-            <div className="mt-9 flex flex-wrap items-center gap-6">
+            <div className="mt-6 flex flex-wrap items-center gap-4 sm:mt-9 sm:gap-6">
               <a href="#reserve" className="ch-btn ch-btn-primary">
                 Reserve your experience
               </a>
@@ -221,16 +231,19 @@ export function Chauffeur() {
         </div>
 
         {/* ── THE THREE PROMISES: engraved plates ───────────────── */}
-        <ul className="mt-16 grid gap-10 md:grid-cols-3 md:gap-12">
+        <ul className="mt-10 grid gap-7 md:mt-16 md:grid-cols-3 md:gap-12">
           {standards.map((s, i) => (
             <Reveal
               as="li"
               key={s.title}
               delay={0.1 + i * 0.08}
-              className="ch-standard group relative border-t border-[#D4AF78]/30 pt-8"
+              className="ch-standard group relative overflow-hidden border-t border-[#D4AF78]/30 pt-6 md:pt-8"
             >
               <span aria-hidden="true" className="ch-standard-line" />
-              <span aria-hidden="true" className="ch-standard-ghost ch-serif">
+              <span
+                aria-hidden="true"
+                className="ch-standard-ghost ch-serif pointer-events-none select-none"
+              >
                 0{i + 1}
               </span>
 
@@ -245,11 +258,11 @@ export function Chauffeur() {
                   />
                 </div>
 
-                <h3 className="t-display t-display-sm mt-4 text-[#F5F3EE]">
+                <h3 className="t-display t-display-sm mt-3 text-[#F5F3EE] sm:mt-4">
                   {s.title}
                 </h3>
 
-                <p className="text-body mt-3 text-[#F5F3EE]/70 transition-colors duration-700 group-hover:text-[#F5F3EE]/90">
+                <p className="text-body mt-2.5 text-[0.9rem] text-[#F5F3EE]/75 transition-colors duration-700 group-hover:text-[#F5F3EE]/90 sm:mt-3 sm:text-base sm:text-[#F5F3EE]/70">
                   {s.body}
                 </p>
               </div>

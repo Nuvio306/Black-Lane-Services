@@ -146,7 +146,7 @@ export function SiteNav() {
           {/* Center: Wordmark */}
           <a
             href="#top"
-            aria-label="Sovereign, back to top"
+            aria-label="Black Lane Services, back to top"
             className="inline-flex min-h-11 items-center justify-center px-2 text-[#F5F3EE] transition-opacity duration-500 hover:opacity-80"
           >
             <Wordmark />

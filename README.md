@@ -1,4 +1,4 @@
-# Sovereign: NYC limousine landing page
+# Black Lane Services: landing page
 
 Next.js 16 + Tailwind CSS 4 + Motion. Design language: Bugatti (see `DESIGN.md`).
 
@@ -14,7 +14,7 @@ Next.js 16 + Tailwind CSS 4 + Motion. Design language: Bugatti (see `DESIGN.md`)
 - `lib/data.ts`: hourly rates and minimums (estimates)
 - `components/Faq.tsx` and `components/Chauffeur.tsx`: policies and claims (TLC licensing, cancellation, minimums, drinks)
 - `components/Reserve.tsx`: `sendRequest()` opens the visitor's email app; connect it to a booking backend or form service
-- Check that the name "Sovereign" is free to use in New York
+- Check that the name "Black Lane Services" is free to use in New York
 
 ## Photos
 Free Unsplash / Pexels images, credited in `PHOTO-CREDITS.md`. Originals are in `_photos-raw/`.

@@ -385,43 +385,45 @@ export function Fleet() {
                   0{currentIndex + 1}
                 </div>
 
-                {/* Slideshow controls */}
-                <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={handlePrevVehicle}
-                    aria-label="Previous vehicle"
-                    className="flex h-10 w-10 items-center justify-center border border-[#D4AF78]/40 bg-[#0B0A08]/80 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
-                  >
-                    <ArrowLeft size={16} aria-hidden="true" />
-                  </button>
+                {/* Slideshow controls — only when multiple vehicles exist */}
+                {fleet.length > 1 && (
+                  <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={handlePrevVehicle}
+                      aria-label="Previous vehicle"
+                      className="flex h-10 w-10 items-center justify-center border border-[#D4AF78]/40 bg-[#0B0A08]/80 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
+                    >
+                      <ArrowLeft size={16} aria-hidden="true" />
+                    </button>
 
-                  <div className="flex items-center gap-2 bg-[#0B0A08]/75 px-3 py-1.5 backdrop-blur-sm">
-                    {fleet.map((v, idx) => (
-                      <button
-                        key={v.id}
-                        type="button"
-                        onClick={() => setActive(v.id)}
-                        aria-label={`Slide ${idx + 1}: ${v.name}`}
-                        aria-current={v.id === active}
-                        className={`h-1.5 transition-all duration-300 ${
-                          v.id === active
-                            ? "w-6 bg-[#D4AF78]"
-                            : "w-1.5 bg-[#D4AF78]/35"
-                        }`}
-                      />
-                    ))}
+                    <div className="flex items-center gap-2 bg-[#0B0A08]/75 px-3 py-1.5 backdrop-blur-sm">
+                      {fleet.map((v, idx) => (
+                        <button
+                          key={v.id}
+                          type="button"
+                          onClick={() => setActive(v.id)}
+                          aria-label={`Slide ${idx + 1}: ${v.name}`}
+                          aria-current={v.id === active}
+                          className={`h-1.5 transition-all duration-300 ${
+                            v.id === active
+                              ? "w-6 bg-[#D4AF78]"
+                              : "w-1.5 bg-[#D4AF78]/35"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleNextVehicle}
+                      aria-label="Next vehicle"
+                      className="flex h-10 w-10 items-center justify-center border border-[#D4AF78]/40 bg-[#0B0A08]/80 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
+                    >
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </button>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={handleNextVehicle}
-                    aria-label="Next vehicle"
-                    className="flex h-10 w-10 items-center justify-center border border-[#D4AF78]/40 bg-[#0B0A08]/80 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
-                  >
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </button>
-                </div>
+                )}
               </div>
 
               <AnimatePresence mode="wait" initial={false}>

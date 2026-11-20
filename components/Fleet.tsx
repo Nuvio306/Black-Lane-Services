@@ -1,7 +1,7 @@
 // components/Fleet.tsx
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -9,7 +9,7 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, X } from "@phosphor-icons/react";
 import { fleet, type Vehicle, type VehicleId } from "@/lib/data";
 import { selectVehicle } from "@/lib/events";
 import { Reveal } from "./Reveal";
@@ -28,23 +28,18 @@ const OCCASIONS = [
 
 const GALLERY_IMAGES = [
   {
-    src: "/images/suburban-int-1.jpg",
-    alt: "Rear captain's chairs in ivory leather",
+    src: "/images/suburban-int-2.jpg",
+    alt: "Third-row seating and ambient lighting",
     label: "Interior · 01",
   },
   {
-    src: "/images/suburban-int-2.jpg",
-    alt: "Third-row seating and ambient lighting",
-    label: "Interior · 02",
-  },
-  {
     src: "/images/suburban-ext-1.jpg",
-    alt: "Front three-quarter view at dusk",
+    alt: "Front three-quarter view",
     label: "Exterior · 01",
   },
   {
     src: "/images/suburban-ext-2.jpg",
-    alt: "Rear profile with chrome accents",
+    alt: "Rear profile",
     label: "Exterior · 02",
   },
 ] as const;
@@ -52,6 +47,7 @@ const GALLERY_IMAGES = [
 export function Fleet() {
   const [active, setActive] = useState<VehicleId>("suburban");
   const [gallerySlide, setGallerySlide] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -68,6 +64,7 @@ export function Fleet() {
 
   const currentIndex = Math.max(0, fleet.findIndex((v) => v.id === active));
   const current = fleet[currentIndex];
+  const safeGallerySlide = gallerySlide % GALLERY_IMAGES.length;
 
   const handlePrevVehicle = () => {
     const prevIdx = (currentIndex - 1 + fleet.length) % fleet.length;
@@ -87,7 +84,52 @@ export function Fleet() {
     setGallerySlide((prev) => (prev + 1) % GALLERY_IMAGES.length);
   };
 
-  const activeGalleryPhoto = GALLERY_IMAGES[gallerySlide];
+  const closeLightbox = () => setLightboxIndex(null);
+
+  const handlePrevLightbox = () => {
+    setLightboxIndex((prev) =>
+      prev === null ? 0 : (prev - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length
+    );
+  };
+
+  const handleNextLightbox = () => {
+    setLightboxIndex((prev) =>
+      prev === null ? 0 : (prev + 1) % GALLERY_IMAGES.length
+    );
+  };
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setLightboxIndex(null);
+      } else if (e.key === "ArrowLeft") {
+        setLightboxIndex((prev) =>
+          prev === null ? 0 : (prev - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length
+        );
+      } else if (e.key === "ArrowRight") {
+        setLightboxIndex((prev) =>
+          prev === null ? 0 : (prev + 1) % GALLERY_IMAGES.length
+        );
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [lightboxIndex]);
+
+  const activeGalleryPhoto = GALLERY_IMAGES[safeGallerySlide];
+  const lightboxPhoto =
+    lightboxIndex !== null
+      ? GALLERY_IMAGES[lightboxIndex % GALLERY_IMAGES.length]
+      : null;
 
   return (
     <>
@@ -429,16 +471,16 @@ export function Fleet() {
             <div className="mt-12 md:hidden">
               <div className="relative aspect-[4/3] overflow-hidden bg-[#0B0A08]">
                 <AnimatePresence mode="wait" initial={false}>
-                  <motion.a
+                  <motion.button
                     key={activeGalleryPhoto.src}
-                    href={activeGalleryPhoto.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    type="button"
+                    onClick={() => setLightboxIndex(safeGallerySlide)}
+                    aria-label={`Open carousel on ${activeGalleryPhoto.label}`}
                     initial={shouldReduceMotion ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: EASE_CUSTOM }}
-                    className="fl-gallery-item group relative block h-full w-full"
+                    className="fl-gallery-item group relative block h-full w-full cursor-pointer text-left"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -454,7 +496,7 @@ export function Fleet() {
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-0 border border-[#D4AF78]/35"
                     />
-                  </motion.a>
+                  </motion.button>
                 </AnimatePresence>
 
                 <span className="fl-label pointer-events-none absolute left-3 top-3 bg-[#0B0A08]/75 px-2.5 py-1 text-[#D4AF78] backdrop-blur-sm">
@@ -478,9 +520,9 @@ export function Fleet() {
                         type="button"
                         onClick={() => setGallerySlide(idx)}
                         aria-label={`Photo ${idx + 1}: ${img.label}`}
-                        aria-current={idx === gallerySlide}
+                        aria-current={idx === safeGallerySlide}
                         className={`h-1.5 transition-all duration-300 ${
-                          idx === gallerySlide
+                          idx === safeGallerySlide
                             ? "w-6 bg-[#D4AF78]"
                             : "w-1.5 bg-[#D4AF78]/35"
                         }`}
@@ -500,35 +542,40 @@ export function Fleet() {
               </div>
             </div>
 
-            {/* Tablet & desktop 2x2 grid */}
+            {/* Tablet & desktop asymmetric 3-photo grid (1 wide feature + 2 side-by-side) */}
             <div className="mt-12 hidden gap-3 md:grid md:grid-cols-2">
-              {GALLERY_IMAGES.map((img) => (
-                <a
-                  key={img.src}
-                  href={img.src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="fl-gallery-item group relative block aspect-[4/3] overflow-hidden bg-[#0B0A08]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    width={1200}
-                    height={900}
-                    draggable={false}
-                    className="h-full w-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                    style={{ filter: "brightness(0.88) contrast(1.06) saturate(0.9)" }}
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 border border-[#D4AF78]/25 transition-colors duration-500 group-hover:border-[#D4AF78]/60"
-                  />
-                  <span className="fl-label absolute bottom-3 left-3 text-[#D4AF78]">
-                    {img.label}
-                  </span>
-                </a>
-              ))}
+              {GALLERY_IMAGES.map((img, idx) => {
+                const isLead = idx === 0;
+                return (
+                  <button
+                    key={img.src}
+                    type="button"
+                    onClick={() => setLightboxIndex(idx)}
+                    aria-label={`View ${img.label}: ${img.alt}`}
+                    className={`fl-gallery-item group relative block w-full cursor-pointer overflow-hidden bg-[#0B0A08] text-left ${
+                      isLead ? "aspect-[16/9] md:col-span-2" : "aspect-[4/3]"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      width={isLead ? 1600 : 1200}
+                      height={isLead ? 900 : 900}
+                      draggable={false}
+                      className="h-full w-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                      style={{ filter: "brightness(0.88) contrast(1.06) saturate(0.9)" }}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 border border-[#D4AF78]/25 transition-colors duration-500 group-hover:border-[#D4AF78]/60"
+                    />
+                    <span className="fl-label absolute bottom-3 left-3 text-[#D4AF78]">
+                      {img.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Gallery footer: catchphrase + rectangular button */}
@@ -553,6 +600,111 @@ export function Fleet() {
           </div>
         </section>
       )}
+
+      {/* Gallery lightbox carousel */}
+      <AnimatePresence>
+        {lightboxIndex !== null && lightboxPhoto && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${current?.name ?? "Vehicle"} photo carousel`}
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.25, ease: EASE_CUSTOM }}
+            onClick={closeLightbox}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#060606]/92 p-4 backdrop-blur-md sm:p-8"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative flex w-full max-w-5xl flex-col gap-4 border border-[#D4AF78]/35 bg-[#0B0A08] p-4 sm:p-6"
+            >
+              {/* Top bar */}
+              <div className="flex items-center justify-between gap-4 border-b border-[#D4AF78]/20 pb-3">
+                <div className="flex items-center gap-3">
+                  <span className="fl-label text-[#D4AF78]">
+                    {lightboxPhoto.label}
+                  </span>
+                  <span className="text-xs tracking-[0.2em] text-[#F5F3EE]/50 tabular-nums">
+                    {String((lightboxIndex % GALLERY_IMAGES.length) + 1).padStart(2, "0")} /{" "}
+                    {String(GALLERY_IMAGES.length).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={closeLightbox}
+                  aria-label="Close carousel"
+                  className="flex h-10 w-10 items-center justify-center border border-[#D4AF78]/35 text-[#D4AF78] transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
+                >
+                  <X size={18} aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Slide stage */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#060606]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={lightboxPhoto.src}
+                    initial={shouldReduceMotion ? false : { opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -16 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: EASE_CUSTOM }}
+                    className="h-full w-full"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={lightboxPhoto.src}
+                      alt={lightboxPhoto.alt}
+                      className="h-full w-full object-contain"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                <button
+                  type="button"
+                  onClick={handlePrevLightbox}
+                  aria-label="Previous gallery image"
+                  className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-[#D4AF78]/45 bg-[#0B0A08]/85 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
+                >
+                  <ArrowLeft size={18} aria-hidden="true" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleNextLightbox}
+                  aria-label="Next gallery image"
+                  className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-[#D4AF78]/45 bg-[#0B0A08]/85 text-[#D4AF78] backdrop-blur-sm transition-colors hover:border-[#D4AF78] hover:bg-[#D4AF78] hover:text-[#0B0A08]"
+                >
+                  <ArrowRight size={18} aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Caption & indicator strip */}
+              <div className="flex flex-col items-start justify-between gap-4 pt-1 sm:flex-row sm:items-center">
+                <p className="text-sm text-[#F5F3EE]/75">{lightboxPhoto.alt}</p>
+
+                <div className="flex items-center gap-2">
+                  {GALLERY_IMAGES.map((img, idx) => (
+                    <button
+                      key={img.src}
+                      type="button"
+                      onClick={() => setLightboxIndex(idx)}
+                      aria-label={`Go to ${img.label}`}
+                      aria-current={idx === lightboxIndex % GALLERY_IMAGES.length}
+                      className={`h-2 transition-all duration-300 ${
+                        idx === lightboxIndex % GALLERY_IMAGES.length
+                          ? "w-7 bg-[#D4AF78]"
+                          : "w-2 bg-[#D4AF78]/30 hover:bg-[#D4AF78]/60"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

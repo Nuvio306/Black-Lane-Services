@@ -165,11 +165,6 @@ export function Footer() {
                   {site.email}
                 </a>
               </li>
-              <li className="mt-4 text-[0.875rem] leading-relaxed text-[#F5F3EE]/50">
-                {site.addressLine1}
-                <br />
-                {site.addressLine2}
-              </li>
               <li className="mt-5 flex flex-wrap items-center gap-2.5 border-t border-[#D4AF78]/10 pt-5 text-[0.6rem] uppercase tracking-[0.28em] text-[#F5F3EE]/55">
                 <span aria-hidden="true" className="ft-pulse h-1.5 w-1.5 rounded-full bg-[#8FBF8A]" />
                 On duty

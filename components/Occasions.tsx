@@ -39,7 +39,7 @@ const tiles: Tile[] = [
   },
   {
     id: "airport",
-    title: "Airport Transfers & Aviation",
+    title: "Airport Transfers",
     body: "Skip the hassle of getting to and from the airport. Sit back, relax, and let us take care of the ride.",
     image: "/images/occ-airport.jpg",
     alt: "An executive limousine waiting on the tarmac beside a private jet",
